@@ -34,11 +34,9 @@ jobs:
     - name: Pack
       run: dotnet pack DIIWO-Core.sln --configuration Release --no-build --output ./artifacts -p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
-    # Publish to NuGet.org (optional - only if NUGET_API_KEY is configured)
-    - name: Publish to NuGet.org
-      if: ${{ secrets.NUGET_API_KEY != '' }}
-      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-      continue-on-error: true
+    # Note: NuGet.org publishing is disabled. Enable it by configuring NUGET_API_KEY secret
+    # - name: Publish to NuGet.org
+    #   run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
