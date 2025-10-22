@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <!-- Package Information -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Diiwo.Core</PackageId>
+    <Version>0.1.0</Version>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    
+    <!-- Author and Company -->
+    <Authors>DIIWO Team</Authors>
+    <Company>DIIWO</Company>
+    <Copyright>Copyright © 2024 DIIWO</Copyright>
+    
+    <!-- Package Description -->
+    <Title>Diiwo.Core - Universal Base Entities and Audit System</Title>
+    <Description>Universal base entities, automatic audit trails, soft delete, and core functionality for all .NET applications. Framework-agnostic library that provides BaseEntity, AuditableEntity, UserTrackedEntity, and automatic audit interceptors for Entity Framework Core.</Description>
+    <Summary>Universal base entities and audit system for .NET applications with Entity Framework Core integration.</Summary>
+    
+    <!-- Package Metadata -->
+    <PackageTags>diiwo;core;entities;base;audit;soft-delete;entity-framework;domain;architecture;clean-architecture;ddd</PackageTags>
+    <PackageProjectUrl>https://github.com/diiwo/diiwo-core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/diiwo/diiwo-core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryBranch>main</RepositoryBranch>
+    
+    <!-- License and Legal -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    
+    <!-- Package Icon and Documentation -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>
+      Version 0.1.0 - Initial Release:
+      • Universal base entities (BaseEntity, AuditableEntity, UserTrackedEntity, DomainEntity, UserOwnedEntity)
+      • Automatic audit trail with AuditInterceptor
+      • Built-in soft delete functionality
+      • Entity state management and locking
+      • Multi-tenant support with UserOwnedEntity
+      • Framework-agnostic design with minimal dependencies
+      • Full Entity Framework Core integration
+      • Comprehensive documentation and examples
+    </PackageReleaseNotes>
+    
+    <!-- Quality and Standards -->
+    <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <!-- Include documentation files in package -->
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="LICENSE" Pack="true" PackagePath="\" />
+    <None Include="GETTING-STARTED.md" Pack="true" PackagePath="docs\" />
+    <None Include="ARCHITECTURE.md" Pack="true" PackagePath="docs\" />
+  </ItemGroup>
+
+</Project>
