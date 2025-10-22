@@ -24,7 +24,19 @@
 
 ### Installation
 
-#### Option 1: GitHub Packages (Recommended)
+#### Option 1: NuGet.org (Recommended)
+```bash
+# Install via .NET CLI
+dotnet add package Diiwo.Core
+
+# Install via Package Manager Console
+Install-Package Diiwo.Core
+
+# Install via PackageReference
+<PackageReference Include="Diiwo.Core" Version="0.1.0" />
+```
+
+#### Option 2: GitHub Packages
 ```bash
 # Add GitHub Packages as a source
 dotnet nuget add source https://nuget.pkg.github.com/Diiwo/index.json --name github --username YOUR_GITHUB_USERNAME --password YOUR_GITHUB_TOKEN
@@ -33,12 +45,12 @@ dotnet nuget add source https://nuget.pkg.github.com/Diiwo/index.json --name git
 dotnet add package Diiwo.Core --version 0.1.0
 ```
 
-#### Option 2: Project Reference
+#### Option 3: Project Reference
 ```xml
 <ProjectReference Include="..\DIIWO-Core\DIIWO.Core.csproj" />
 ```
 
-#### Option 3: GitHub Release
+#### Option 4: GitHub Release
 Download the `.nupkg` file from [Releases](https://github.com/Diiwo/diiwo-core/releases) and install locally:
 ```bash
 dotnet add package Diiwo.Core --source /path/to/downloaded/packages
