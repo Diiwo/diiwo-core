@@ -23,16 +23,16 @@ jobs:
       run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore DIIWO-Core.sln
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build DIIWO-Core.sln --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test DIIWO-Core.sln --configuration Release --no-build --verbosity normal
 
     - name: Pack
-      run: dotnet pack --configuration Release --no-build --output ./artifacts -p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+      run: dotnet pack DIIWO-Core.sln --configuration Release --no-build --output ./artifacts -p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
     - name: Publish to NuGet.org
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

@@ -20,16 +20,16 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore DIIWO-Core.sln
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build DIIWO-Core.sln --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test DIIWO-Core.sln --configuration Release --no-build --verbosity normal
 
     - name: Pack
-      run: dotnet pack --configuration Release --no-build --output ./artifacts
+      run: dotnet pack DIIWO-Core.sln --configuration Release --no-build --output ./artifacts
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
