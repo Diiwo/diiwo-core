@@ -24,15 +24,24 @@
 
 ### Installation
 
+#### Option 1: GitHub Packages (Recommended)
 ```bash
-# Install via NuGet Package Manager
-Install-Package Diiwo.Core
+# Add GitHub Packages as a source
+dotnet nuget add source https://nuget.pkg.github.com/Diiwo/index.json --name github --username YOUR_GITHUB_USERNAME --password YOUR_GITHUB_TOKEN
 
 # Install via .NET CLI
-dotnet add package Diiwo.Core
+dotnet add package Diiwo.Core --version 0.1.0
+```
 
-# Install via PackageReference
-<PackageReference Include="Diiwo.Core" Version="1.1.0" />
+#### Option 2: Project Reference
+```xml
+<ProjectReference Include="..\DIIWO-Core\DIIWO.Core.csproj" />
+```
+
+#### Option 3: GitHub Release
+Download the `.nupkg` file from [Releases](https://github.com/Diiwo/diiwo-core/releases) and install locally:
+```bash
+dotnet add package Diiwo.Core --source /path/to/downloaded/packages
 ```
 
 ### Basic Setup
@@ -562,18 +571,9 @@ dotnet build
 dotnet test
 ```
 
-## 📋 Roadmap
-
-- [ ] **v1.2** - Query extensions for common filtering patterns
-- [ ] **v1.3** - Event sourcing support  
-- [ ] **v1.4** - Integration with popular caching libraries
-- [ ] **v1.5** - Performance monitoring extensions
-
 ## 🔗 Related Projects
 
 - **[Diiwo.Identity](https://github.com/diiwo/diiwo-identity)** - Complete identity management with dual architectures
-- **[Diiwo.Common](https://github.com/diiwo/diiwo-common)** - Shared utilities and extensions
-- **[Diiwo.Templates](https://github.com/diiwo/diiwo-templates)** - Project templates using Diiwo.Core
 
 ## 📄 License
 
@@ -585,14 +585,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 🏗️ **Architecture**: [Architecture Guide](ARCHITECTURE.md)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/diiwo/diiwo-core/issues)
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/diiwo/diiwo-core/discussions)
-- 📧 **Email**: support@diiwo.com
 
 ---
 
 <div align="center">
 
 **Built with ❤️ by the [DIIWO Team](https://diiwo.com)**
-
-[🏠 Homepage](https://diiwo.com) • [📖 Docs](https://docs.diiwo.com) • [💼 Enterprise](https://enterprise.diiwo.com)
 
 </div>
