@@ -9,16 +9,31 @@
 
 ## ✨ Key Features
 
+### Core Entities & Audit
 - 🏗️ **Universal Base Entities** - `BaseEntity`, `AuditableEntity`, `UserTrackedEntity`, `DomainEntity`
 - 🔍 **Zero-Code Audit Trails** - Automatic audit field population with **zero manual code required**
 - 🗑️ **Enterprise Soft Delete** - Preserve data for compliance while marking as terminated
 - 📊 **Entity State Management** - Complete lifecycle tracking (`Created`, `Active`, `Inactive`, `Terminated`)
 - 👤 **User Attribution** - Automatic tracking of who made changes and when
 - 🏢 **Compliance Ready** - Meet regulatory requirements with comprehensive audit trails
+
+### API Response Patterns (New in v0.2.0)
+- 📦 **ApiResponse<T>** - Standardized API response wrapper for consistent formatting
+- 📄 **PagedResponse<T>** - Built-in pagination support with metadata
+- ✅ **ValidationResponse** - Structured validation error responses
+
+### Exception Handling (New in v0.2.0)
+- ⚠️ **BusinessException** - Base exception for business logic violations
+- 🔍 **NotFoundException** - Resource not found exceptions
+- 🔒 **UnauthorizedException** - Authentication/authorization failures
+- ✔️ **ValidationException** - Input validation errors with field-level details
+- ⚡ **ConflictException** - Data conflict exceptions
+
+### Architecture & Compatibility
 - 🏛️ **Clean Architecture Ready** - Follows DDD and clean architecture principles
 - 🌐 **Framework Agnostic** - Works with any .NET application type (Web, Console, Desktop, Services)
-- ⚡ **Zero Dependencies** - Minimal external dependencies for maximum compatibility
-- 🧪 **Production Proven** - Powers enterprise identity solutions like **Diiwo.Identity**
+- ⚡ **Minimal Dependencies** - Only essential EF Core and DI dependencies
+- 🧪 **Production Proven** - Powers enterprise solutions like **Diiwo.Identity**
 
 ## 🚀 Quick Start
 
@@ -33,7 +48,7 @@ dotnet add package Diiwo.Core
 Install-Package Diiwo.Core
 
 # Install via PackageReference
-<PackageReference Include="Diiwo.Core" Version="0.1.0" />
+<PackageReference Include="Diiwo.Core" Version="0.2.0" />
 ```
 
 #### Option 2: GitHub Packages
@@ -42,7 +57,7 @@ Install-Package Diiwo.Core
 dotnet nuget add source https://nuget.pkg.github.com/Diiwo/index.json --name github --username YOUR_GITHUB_USERNAME --password YOUR_GITHUB_TOKEN
 
 # Install via .NET CLI
-dotnet add package Diiwo.Core --version 0.1.0
+dotnet add package Diiwo.Core --version 0.2.0
 ```
 
 #### Option 3: Project Reference
@@ -304,6 +319,135 @@ if (document.IsOwnedBy(currentUserId))
 var userDocs = await context.Documents
     .Where(d => d.UserId == currentUserId || d.IsGlobal)
     .ToListAsync();
+```
+
+### Using API Response Patterns (v0.2.0)
+
+```csharp
+using Diiwo.Core.Responses;
+
+// Success response
+[HttpGet("{id}")]
+public async Task<ActionResult> GetUser(Guid id)
+{
+    var user = await _userService.GetByIdAsync(id);
+    if (user == null)
+        return NotFound(ApiResponse<User>.ErrorResponse("User not found"));
+
+    return Ok(ApiResponse<User>.SuccessResponse(user, "User retrieved successfully"));
+}
+
+// Paginated response
+[HttpGet]
+public async Task<ActionResult> GetUsers(int page = 1, int pageSize = 10)
+{
+    var users = await _userService.GetPagedAsync(page, pageSize);
+    var totalCount = await _userService.CountAsync();
+
+    return Ok(PagedResponse<User>.Create(users, page, pageSize, totalCount));
+}
+
+// Validation response
+[HttpPost]
+public async Task<ActionResult> CreateUser(UserDto dto)
+{
+    if (!ModelState.IsValid)
+    {
+        var errors = ModelState.ToDictionary(
+            kvp => kvp.Key,
+            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()
+        );
+        return BadRequest(ValidationResponse.Create(errors));
+    }
+
+    // ... create user
+}
+```
+
+### Using Exception Classes (v0.2.0)
+
+```csharp
+using Diiwo.Core.Exceptions;
+
+// Service layer
+public class UserService
+{
+    public async Task<User> GetByIdAsync(Guid id)
+    {
+        var user = await _repository.FindAsync(id);
+        if (user == null)
+            throw new NotFoundException("User", id);
+
+        return user;
+    }
+
+    public async Task<User> CreateAsync(string email)
+    {
+        var existing = await _repository.FindByEmailAsync(email);
+        if (existing != null)
+            throw new ConflictException("User", "Email", email);
+
+        // ... create user
+    }
+
+    public async Task ValidateAsync(UserDto dto)
+    {
+        var errors = new Dictionary<string, List<string>>();
+
+        if (string.IsNullOrEmpty(dto.Email))
+            errors.Add(nameof(dto.Email), new List<string> { "Email is required" });
+
+        if (errors.Any())
+            throw new ValidationException(errors);
+    }
+}
+
+// Global exception handler middleware
+public class ExceptionMiddleware
+{
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (NotFoundException ex)
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse<object>.ErrorResponse(ex.Message)
+            );
+        }
+        catch (ValidationException ex)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(
+                ValidationResponse.Create(ex.ValidationErrors)
+            );
+        }
+        catch (UnauthorizedException ex)
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse<object>.ErrorResponse(ex.Message)
+            );
+        }
+        catch (ConflictException ex)
+        {
+            context.Response.StatusCode = 409;
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse<object>.ErrorResponse(ex.Message)
+            );
+        }
+        catch (BusinessException ex)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse<object>.ErrorResponse(ex.Message)
+            );
+        }
+    }
+}
 ```
 
 ## 🔧 Advanced Configuration

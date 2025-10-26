@@ -10,9 +10,9 @@
     <!-- Package Information -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Diiwo.Core</PackageId>
-    <Version>0.1.0</Version>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
+    <Version>0.2.0</Version>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <FileVersion>0.2.0.0</FileVersion>
     
     <!-- Author and Company -->
     <Authors>DIIWO Team</Authors>
@@ -25,7 +25,7 @@
     <Summary>Universal base entities and audit system for .NET applications with Entity Framework Core integration.</Summary>
     
     <!-- Package Metadata -->
-    <PackageTags>diiwo;core;entities;base;audit;soft-delete;entity-framework;domain;architecture;clean-architecture;ddd</PackageTags>
+    <PackageTags>diiwo;core;entities;base;audit;soft-delete;entity-framework;domain;architecture;clean-architecture;ddd;api-response;exceptions;validation</PackageTags>
     <PackageProjectUrl>https://github.com/diiwo/diiwo-core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/diiwo/diiwo-core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -38,6 +38,13 @@
     <!-- Package Icon and Documentation -->
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>
+      Version 0.2.0 - Added Response Patterns and Exceptions:
+      • Added ApiResponse&lt;T&gt; for standardized API responses
+      • Added PagedResponse&lt;T&gt; for paginated data
+      • Added ValidationResponse for validation errors
+      • Added standard exceptions (BusinessException, NotFoundException, UnauthorizedException, ValidationException, ConflictException)
+      • Improved error handling patterns
+
       Version 0.1.0 - Initial Release:
       • Universal base entities (BaseEntity, AuditableEntity, UserTrackedEntity, DomainEntity, UserOwnedEntity)
       • Automatic audit trail with AuditInterceptor
